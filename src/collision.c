@@ -10,8 +10,8 @@ typedef struct
 	Vector2 Midpoint;
 } Wall;
 
-const int wallCount = 2;
-Wall Walls[2];
+const int wallCount = 5;
+Wall Walls[5];
 
 Wall CreateWall(Vector2 from, Vector2 to)
 {
@@ -30,7 +30,10 @@ Wall CreateWall(Vector2 from, Vector2 to)
 void LoadWalls()
 {
 	Walls[0] = CreateWall((Vector2){300, 100}, (Vector2){-300, 100});
-	Walls[1] = CreateWall((Vector2){300, -200}, (Vector2){300, 100});
+	Walls[1] = CreateWall((Vector2){300, -30}, (Vector2){300, 100});
+	Walls[2] = CreateWall((Vector2){500, -30}, (Vector2){300, -30});
+	Walls[3] = CreateWall((Vector2){500, -500}, (Vector2){500, -30});
+	Walls[4] = CreateWall((Vector2){-300, 100}, (Vector2){-300, -500});
 }
 
 void DrawWalls()
@@ -62,8 +65,9 @@ Vector2 GetClosestPoint(Vector2 p1, Vector2 p2, Vector2 pos)
 	return res;
 }
 
-void CollideBody(Vector2 *pos, float radius)
+bool CollideBody(Vector2 *pos, float radius)
 {
+	bool hitGround = false;
 	for (int i = 0; i < wallCount; i++)
 	{
 		Wall w = Walls[i];
@@ -81,6 +85,11 @@ void CollideBody(Vector2 *pos, float radius)
 		{
 			float rd = cd - radius;
 			*pos = Vector2Add(*pos, Vector2Multiply(Vector2Normalize(cv), (Vector2){rd, rd}));
+
+			if (w.Normal.y < 0)
+				hitGround = true;
 		}
 	}
+
+	return hitGround;
 }

@@ -3,12 +3,10 @@
 #include "src/collision.c"
 #include "src/player.c"
 
-#define DELTA GetFrameTime()
-
 Camera2D camera = {};
 static Vector2 cameraLerpPos;
 
-Player player = {.Size = (Vector2){64, 96}, .MovementSpeed = 200};
+Player player = {};
 
 static void setupCamera()
 {
@@ -29,7 +27,7 @@ void UpdateGame()
 	UpdatePlayer(&player);
 
 	cameraLerpPos.x = player.Position.x;
-	camera.target.x = Lerp(camera.target.x, cameraLerpPos.x, DELTA);
+	camera.target.x = Lerp(camera.target.x, cameraLerpPos.x, GetFrameTime());
 }
 
 void RenderGame()
