@@ -5,6 +5,7 @@ typedef struct
 	Vector2 Position;
 	Vector2 Size;
 	Vector2 HalfSize;
+	Rectangle Hitbox;
 
 	Vector2 Velocity;
 
@@ -28,6 +29,7 @@ void InitPlayer(Player *p)
 	p->MovementSpeed = 200;
 	p->HalfSize = (Vector2){p->Size.x / 2, p->Size.y / 2};
 	p->Position = Vector2Zero();
+	p->Hitbox = (Rectangle){ p->Position.x - p->HalfSize.x, p->Position.y - p->HalfSize.y, p->Size.x, p->Size.y};
 
 	p->Velocity = Vector2Zero();
 
@@ -77,13 +79,9 @@ void UpdatePlayer(Player *p)
 	pos = Vector2Add(pos, p->Velocity);
 
 	p->Position = pos;
-	p->IsGrounded = CollideBody(&(p->Position), 32);
-}
-
-void DrawPlayer(Player *p)
-{
-	// DrawRectangleV(p->Position, p->Size, RED);
-	DrawCircleV(p->Position, 32, RED);
+	p->IsGrounded = CollideBody(&(p->Position), 24);
+	p->Hitbox.x = p->Position.x - p->HalfSize.x;
+	p->Hitbox.y = p->Position.y - (p->Size.y * 0.75);
 }
 
 void Jump(Player *p)
@@ -106,4 +104,10 @@ float PlayerGetJumpGravity(Player *p)
 float PlayerGetFallGravity(Player *p)
 {
 	return ((2 * p->JumpHeight) / (p->JumpTimeToDescend * p->JumpTimeToDescend));
+}
+
+void DrawPlayer(Player *p)
+{
+	DrawRectangleRec(p->Hitbox, GREEN);
+	DrawCircleV(p->Position, 24, RED);
 }
