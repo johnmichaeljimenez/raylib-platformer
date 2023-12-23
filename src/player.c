@@ -17,6 +17,7 @@ typedef struct
 	float MovementSpeed;
 } Player;
 
+void Jump(Player *p);
 float PlayerGetJumpVelocity(Player *p);
 float PlayerGetJumpGravity(Player *p);
 float PlayerGetFallGravity(Player *p);
@@ -63,12 +64,10 @@ void UpdatePlayer(Player *p)
 
 	if (p->IsGrounded)
 	{
-		//TODO: Add jump buffer input and coyote time
- 		if (IsKeyPressed(KEY_SPACE))
+		// TODO: Add jump buffer input and coyote time
+		if (IsKeyPressed(KEY_SPACE))
 		{
-			p->Velocity.y = PlayerGetJumpVelocity(p);
-			p->IsJumping = true;
-			p->IsGrounded = false;
+			Jump(p);
 		}
 	}
 
@@ -85,6 +84,13 @@ void DrawPlayer(Player *p)
 {
 	// DrawRectangleV(p->Position, p->Size, RED);
 	DrawCircleV(p->Position, 32, RED);
+}
+
+void Jump(Player *p)
+{
+	p->Velocity.y = PlayerGetJumpVelocity(p);
+	p->IsJumping = true;
+	p->IsGrounded = false;
 }
 
 float PlayerGetJumpVelocity(Player *p)
