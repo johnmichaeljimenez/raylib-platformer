@@ -1,11 +1,9 @@
 #include <raylib.h>
-#include <src/bounds.c>
 
 typedef struct
 {
 	Vector2 Position;
 	Vector2 Size;
-	Bounds Bounds;
 	Vector2 HalfSize;
 
 	float MovementSpeed;
@@ -15,7 +13,6 @@ void InitPlayer(Player *p)
 {
 	p->HalfSize = (Vector2){p->Size.x / 2, p->Size.y / 2};
 	p->Position = (Vector2){0, 0};
-	p->Bounds = (Bounds){p->Position, p->Size};
 }
 
 void UpdatePlayer(Player *p)
@@ -33,8 +30,6 @@ void UpdatePlayer(Player *p)
 
 	// collision here
 	CollideBody(&(p->Position), 32);
-
-	p->Bounds.Center = p->Position;
 }
 
 void DrawPlayer(Player *p)

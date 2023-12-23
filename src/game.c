@@ -8,11 +8,7 @@
 Camera2D camera = {};
 static Vector2 cameraLerpPos;
 
-Player player = {
-	.Size = (Vector2){64, 96},
-	.Bounds = {.Size = {64, 96}},
-	.MovementSpeed = 200
-	};
+Player player = {.Size = (Vector2){64, 96}, .MovementSpeed = 200};
 
 static void setupCamera()
 {
@@ -39,7 +35,7 @@ void UpdateGame()
 void RenderGame()
 {
 	BeginMode2D(camera);
-	
+
 	DrawWalls();
 	DrawPlayer(&player);
 
