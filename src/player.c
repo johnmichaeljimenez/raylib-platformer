@@ -20,7 +20,7 @@ void InitPlayer(Player *p)
 
 void UpdatePlayer(Player *p)
 {
-	Vector2 lastPos = p->Position;
+	// Vector2 lastPos = p->Position;
 
 	if (IsKeyDown(KEY_A))
 		p->Position.x -= p->MovementSpeed * GetFrameTime();
@@ -28,16 +28,13 @@ void UpdatePlayer(Player *p)
 		p->Position.x += p->MovementSpeed * GetFrameTime();
 
 	// collision here
-	 if (p->Position.y + p->HalfSize.y >= 10)
-	 	p->Position.y -= 10;
-		
-	 if (p->Position.x + p->HalfSize.x >= 500)
-	 	p->Position.x -= 1;
+	CollideBody(&(p->Position), 64);
 
 	p->Bounds.Center = p->Position;
 }
 
 void DrawPlayer(Player *p)
 {
-	DrawRectangleV(p->Position, p->Size, RED);
+	// DrawRectangleV(p->Position, p->Size, RED);
+	DrawCircleV(p->Position, 64, RED);
 }
