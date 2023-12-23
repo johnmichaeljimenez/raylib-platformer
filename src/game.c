@@ -1,7 +1,7 @@
 #include <raylib.h>
 
-#include "src/player.c"
 #include "src/collision.c"
+#include "src/player.c"
 
 #define DELTA GetFrameTime()
 
@@ -39,9 +39,9 @@ void UpdateGame()
 void RenderGame()
 {
 	BeginMode2D(camera);
-
+	
 	DrawWalls();
 	DrawPlayer(&player);
-	
+
 	EndMode2D();
 }

@@ -26,9 +26,13 @@ void UpdatePlayer(Player *p)
 		p->Position.x -= p->MovementSpeed * GetFrameTime();
 	if (IsKeyDown(KEY_D))
 		p->Position.x += p->MovementSpeed * GetFrameTime();
+	if (IsKeyDown(KEY_W))
+		p->Position.y -= p->MovementSpeed * GetFrameTime();
+	if (IsKeyDown(KEY_S))
+		p->Position.y += p->MovementSpeed * GetFrameTime();
 
 	// collision here
-	CollideBody(&(p->Position), 64);
+	CollideBody(&(p->Position), 32);
 
 	p->Bounds.Center = p->Position;
 }
@@ -36,5 +40,5 @@ void UpdatePlayer(Player *p)
 void DrawPlayer(Player *p)
 {
 	// DrawRectangleV(p->Position, p->Size, RED);
-	DrawCircleV(p->Position, 64, RED);
+	DrawCircleV(p->Position, 32, RED);
 }

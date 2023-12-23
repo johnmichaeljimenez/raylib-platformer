@@ -64,29 +64,23 @@ Vector2 GetClosestPoint(Vector2 p1, Vector2 p2, Vector2 pos)
 
 void CollideBody(Vector2 *pos, float radius)
 {
-	Vector2 curPos = {pos->x, pos->y};
-	curPos.x = 0;
-
 	for (int i = 0; i < wallCount; i++)
 	{
 		Wall w = Walls[i];
-		Vector2 d = Vector2Subtract(w.To, w.Midpoint);
+		Vector2 d = Vector2Subtract(*pos, w.Midpoint);
 
-		// bool visible = Vector2DotProduct(w.Normal, d) > 0;
-		// if (!visible)
-		// 	continue;
+		bool visible = Vector2DotProduct(w.Normal, d) > 0;
+		if (!visible)
+			continue;
 
-		Vector2 c = GetClosestPoint(w.From, w.To, curPos);
-		Vector2 cv = Vector2Subtract(c, curPos);
+		Vector2 c = GetClosestPoint(w.From, w.To, *pos);
+		Vector2 cv = Vector2Subtract(c, *pos);
 		float cd = Vector2Length(cv);
 
 		if (cd <= radius)
 		{
 			float rd = cd - radius;
-			curPos = Vector2Add(curPos, Vector2Multiply(Vector2Normalize(cv), (Vector2){rd, rd}));
-
-			pos->x = curPos.x;
-			pos->y = curPos.y;
+			*pos = Vector2Add(*pos, Vector2Multiply(Vector2Normalize(cv), (Vector2){rd, rd}));
 		}
 	}
 }
