@@ -60,9 +60,22 @@ void UpdatePlayer(Player *p)
 	}
 
 	if (p->Velocity.y > 0)
+	{
 		p->Velocity.y += PlayerGetFallGravity(p) * GetFrameTime();
+	}
 	else
+	{
 		p->Velocity.y += PlayerGetJumpGravity(p) * GetFrameTime();
+
+		if (p->IsJumping)
+		{
+			if (IsKeyReleased(KEY_SPACE))
+			{
+				p->Velocity.y /= 2;
+				p->IsJumping = false;
+			}
+		}
+	}
 
 	if (p->IsGrounded)
 	{
