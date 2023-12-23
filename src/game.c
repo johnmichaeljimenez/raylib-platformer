@@ -9,6 +9,9 @@ Player player = {
 	}
 };
 
+#define DELTA GetFrameTime()
+static Vector2 cameraLerpPos;
+
 static void setupCamera()
 {
 	camera.target = (Vector2){0, 0};
@@ -26,7 +29,8 @@ void UpdateGame()
 {
 	UpdatePlayer(&player);
 
-	camera.target.x = player.Position.x;
+	cameraLerpPos.x = player.Position.x;
+	camera.target.x = Lerp(camera.target.x, cameraLerpPos.x, DELTA);
 }
 
 void RenderGame()
