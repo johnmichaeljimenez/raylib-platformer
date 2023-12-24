@@ -25,6 +25,7 @@ void BulletSpawn()
 	b.Pos = (Vector2){ 0,0 };
 	b.Velocity.x = GetRandomValue(-10, 10);
 	b.Velocity.y = GetRandomValue(-10, 10);
+	b.index = bulletIndex;
 
 	b.Velocity = Vector2Multiply(Vector2Normalize(b.Velocity), (Vector2) { 100, 100 });
 
@@ -44,9 +45,11 @@ void BulletSpawn()
 
 void BulletDespawn(Bullet* b)
 {
-	printf("Despawned bullet %d/%d\n", bulletIndex, bulletCount - 1);
+	bulletIndex = b->index;
 	b->Alive = false;
 	b->timer = 0;
+	b->index = -1;
+	printf("Despawned bullet %d/%d\n", bulletIndex, bulletCount - 1);
 }
 
 void InitBulletSystem()
@@ -70,7 +73,6 @@ void UpdateBullets()
 
 		if (b->timer <= 0)
 		{
-			bulletIndex = i;
 			BulletDespawn(b);
 			continue;
 		}
