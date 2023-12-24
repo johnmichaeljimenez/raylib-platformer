@@ -1,3 +1,4 @@
+#include "time.h"
 #include <raylib.h>
 #include <raymath.h>
 #include <stdlib.h>
@@ -7,6 +8,8 @@
 int bulletIndex;
 int bulletCount;
 Bullet* bulletsArray;
+
+float t = 0;
 
 void BulletSpawn()
 {
@@ -61,9 +64,14 @@ void InitBulletSystem()
 
 void UpdateBullets()
 {
-	if (IsKeyPressed(KEY_R))
+	if (IsKeyDown(KEY_R))
 	{
-		BulletSpawn();
+		t += TICKRATE;
+		if (t > 0.01f)
+		{
+			t = 0;
+			BulletSpawn();
+		}
 	}
 
 	int c = bulletCount;
@@ -74,7 +82,7 @@ void UpdateBullets()
 		if (!b->Alive)
 			continue;
 
-		b->timer -= GetFrameTime();
+		b->timer -= TICKRATE;
 
 		if (b->timer <= 0)
 		{
@@ -83,8 +91,8 @@ void UpdateBullets()
 		}
 
 		Vector2 v = b->Velocity;
-		v.x *= GetFrameTime();
-		v.y *= GetFrameTime();
+		v.x *= TICKRATE;
+		v.y *= TICKRATE;
 		b->Pos = Vector2Add(b->Pos, v);
 	}
 }

@@ -1,3 +1,4 @@
+#include "time.h"
 #include <raylib.h>
 #include "game.h"
 #include "collision.h"
@@ -31,7 +32,7 @@ void UpdateGame()
 	UpdateBullets();
 
 	cameraLerpPos.x = player.Position.x;
-	camera.target.x = Lerp(camera.target.x, cameraLerpPos.x, GetFrameTime());
+	camera.target.x = Lerp(camera.target.x, cameraLerpPos.x, TICKRATE);
 }
 
 void RenderGame()
@@ -48,4 +49,36 @@ void RenderGame()
 void EndGame()
 {
 	EndBulletSystem();
+}
+
+int n = 0;
+void RunLoop()
+{
+	float previous = GetTime();
+	float lag = 0.0;
+
+	while (!WindowShouldClose() && n < 99999)
+	{
+		n++;
+		float current = GetTime();
+		float elapsed = current - previous;
+		previous = current;
+		lag += elapsed;
+
+		while (lag >= TICKRATE)
+		{
+			UpdateGame();
+			lag -= TICKRATE;
+		}
+
+		//draw
+
+		BeginDrawing();
+		ClearBackground(DARKGRAY);
+		RenderGame();
+		DrawFPS(12, 12);
+		EndDrawing();
+
+		n = 0;
+	}
 }

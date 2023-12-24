@@ -5,22 +5,12 @@
 
 int main()
 {
-	SetConfigFlags(FLAG_VSYNC_HINT);
-	InitWindow(1600, 900, "Raylib Platformer");
+	SetConfigFlags(FLAG_WINDOW_MAXIMIZED | FLAG_WINDOW_UNDECORATED);
+	InitWindow(0, 0, "Raylib Platformer");
+	//SetTargetFPS(200);
 
 	InitGame();
-
-	while (!WindowShouldClose())
-	{
-		UpdateGame();
-
-		BeginDrawing();
-		ClearBackground(DARKGRAY);
-		RenderGame();
-		DrawFPS(12, 12);
-		EndDrawing();
-	}
-
+	RunLoop();
 	EndGame();
 	CloseWindow();
 }

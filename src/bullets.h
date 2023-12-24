@@ -9,7 +9,7 @@ typedef struct Bullet
 	Vector2 Velocity;
 	bool Alive;
 	float timer;
-	int index;
+	short index;
 } Bullet;
 
 

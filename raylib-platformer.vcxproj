@@ -135,12 +135,14 @@
     <ClCompile Include="src\game.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\player.c" />
+    <ClCompile Include="src\time.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\bullets.h" />
     <ClInclude Include="src\collision.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\player.h" />
+    <ClInclude Include="src\time.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

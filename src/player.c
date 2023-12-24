@@ -1,3 +1,4 @@
+#include "time.h"
 #include <raylib.h>
 #include <raymath.h>
 #include "player.h"
@@ -25,9 +26,9 @@ void PlayerUpdate(Player *p)
 	Vector2 pos = p->Position;
 
 	if (IsKeyDown(KEY_A))
-		p->Velocity.x = -p->MovementSpeed * GetFrameTime();
+		p->Velocity.x = -p->MovementSpeed * TICKRATE;
 	else if (IsKeyDown(KEY_D))
-		p->Velocity.x = p->MovementSpeed * GetFrameTime();
+		p->Velocity.x = p->MovementSpeed * TICKRATE;
 	else
 		p->Velocity.x = 0;
 
@@ -41,11 +42,11 @@ void PlayerUpdate(Player *p)
 
 	if (p->Velocity.y > 0)
 	{
-		p->Velocity.y += PlayerGetFallGravity(p) * GetFrameTime();
+		p->Velocity.y += PlayerGetFallGravity(p) * TICKRATE;
 	}
 	else
 	{
-		p->Velocity.y += PlayerGetJumpGravity(p) * GetFrameTime();
+		p->Velocity.y += PlayerGetJumpGravity(p) * TICKRATE;
 
 		if (p->IsJumping)
 		{

@@ -2,8 +2,7 @@
 #define _game_h
 
 void InitGame();
-void UpdateGame();
-void RenderGame();
+void RunLoop();
 void EndGame();
 
 #endif
