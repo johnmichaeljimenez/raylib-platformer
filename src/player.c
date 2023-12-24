@@ -1,32 +1,12 @@
 #include <raylib.h>
+#include <raymath.h>
+#include "player.h"
+#include "collision.h"
 
-typedef struct
-{
-	Vector2 Position;
-	Vector2 Size;
-	Vector2 HalfSize;
-	Rectangle Hitbox;
-
-	Vector2 Velocity;
-
-	bool IsGrounded;
-	bool IsJumping;
-	float JumpHeight;
-	float JumpTimeToPeak;
-	float JumpTimeToDescend;
-
-	float MovementSpeed;
-} Player;
-
-void Jump(Player *p);
-float PlayerGetJumpVelocity(Player *p);
-float PlayerGetJumpGravity(Player *p);
-float PlayerGetFallGravity(Player *p);
-
-void InitPlayer(Player *p)
+void PlayerInit(Player *p)
 {
 	p->Size = (Vector2){64, 96};
-	p->MovementSpeed = 200;
+	p->MovementSpeed = 300;
 	p->HalfSize = (Vector2){p->Size.x / 2, p->Size.y / 2};
 	p->Position = Vector2Zero();
 	p->Hitbox = (Rectangle){ p->Position.x - p->HalfSize.x, p->Position.y - p->HalfSize.y, p->Size.x, p->Size.y};
@@ -40,7 +20,7 @@ void InitPlayer(Player *p)
 	p->JumpHeight = 2;
 }
 
-void UpdatePlayer(Player *p)
+void PlayerUpdate(Player *p)
 {
 	Vector2 pos = p->Position;
 
@@ -82,7 +62,7 @@ void UpdatePlayer(Player *p)
 		// TODO: Add jump buffer input and coyote time
 		if (IsKeyPressed(KEY_SPACE))
 		{
-			Jump(p);
+			PlayerJump(p);
 		}
 	}
 
@@ -97,7 +77,7 @@ void UpdatePlayer(Player *p)
 	p->Hitbox.y = p->Position.y - (p->Size.y * 0.75);
 }
 
-void Jump(Player *p)
+void PlayerJump(Player *p)
 {
 	p->Velocity.y = PlayerGetJumpVelocity(p);
 	p->IsJumping = true;
@@ -119,7 +99,7 @@ float PlayerGetFallGravity(Player *p)
 	return ((2 * p->JumpHeight) / (p->JumpTimeToDescend * p->JumpTimeToDescend));
 }
 
-void DrawPlayer(Player *p)
+void PlayerDraw(Player *p)
 {
 	DrawRectangleRec(p->Hitbox, GREEN);
 	DrawCircleV(p->Position, 24, RED);
