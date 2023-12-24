@@ -4,5 +4,6 @@
 void InitGame();
 void UpdateGame();
 void RenderGame();
+void EndGame();
 
 #endif

@@ -61,6 +61,11 @@ void InitBulletSystem()
 
 void UpdateBullets()
 {
+	if (IsKeyPressed(KEY_R))
+	{
+		BulletSpawn();
+	}
+
 	int c = bulletCount;
 	for (int i = c - 1; i >= 0; i--)
 	{

@@ -2,7 +2,6 @@
 #include <raylib.h>
 #include <raymath.h>
 #include "game.h"
-#include "bullets.h"
 
 int main()
 {
@@ -10,26 +9,18 @@ int main()
 	InitWindow(1600, 900, "Raylib Platformer");
 
 	InitGame();
-	InitBulletSystem();
 
 	while (!WindowShouldClose())
 	{
 		UpdateGame();
-		UpdateBullets();
-
-		if (IsKeyPressed(KEY_R))
-		{
-			BulletSpawn();
-		}
 
 		BeginDrawing();
 		ClearBackground(DARKGRAY);
 		RenderGame();
-		DrawBullets();
 		DrawFPS(12, 12);
 		EndDrawing();
 	}
 
-	EndBulletSystem();
+	EndGame();
 	CloseWindow();
 }

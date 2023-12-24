@@ -3,6 +3,7 @@
 #include "collision.h"
 #include "player.h"
 #include <raymath.h>
+#include "bullets.h"
 
 Camera2D camera;
 static Vector2 cameraLerpPos;
@@ -20,12 +21,14 @@ void InitGame()
 {
 	setupCamera();
 	PlayerInit(&player);
+	InitBulletSystem();
 	LoadWalls();
 }
 
 void UpdateGame()
 {
 	PlayerUpdate(&player);
+	UpdateBullets();
 
 	cameraLerpPos.x = player.Position.x;
 	camera.target.x = Lerp(camera.target.x, cameraLerpPos.x, GetFrameTime());
@@ -37,6 +40,12 @@ void RenderGame()
 
 	DrawWalls();
 	PlayerDraw(&player);
+	DrawBullets();
 
 	EndMode2D();
+}
+
+void EndGame()
+{
+	EndBulletSystem();
 }
