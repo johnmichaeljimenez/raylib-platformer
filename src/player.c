@@ -6,14 +6,15 @@
 
 static float coyoteTime = 0;
 static float jumpBufferTime = 0;
+static int verticalHitType = 0; //0 = none, 1 = floor, -1 = ceiling
 
-void PlayerInit(Player *p)
+void PlayerInit(Player* p)
 {
-	p->GroundCheckBounds = CreateBounds((Vector2){p->Position.x, p->Position.y + 50}, (Vector2) { 60, 12 });
+	p->GroundCheckBounds = CreateBounds((Vector2) { p->Position.x, p->Position.y + 50 }, (Vector2) { 60, 12 });
 	p->ColliderBounds = CreateBounds(p->Position, (Vector2) { 64, 96 });
 	p->MovementSpeed = 300;
 	p->Position = Vector2Zero();
-	p->Hitbox = (Rectangle){ p->Position.x - (p->ColliderBounds.size.x/2), p->Position.y - (p->ColliderBounds.size.y / 2), p->ColliderBounds.size.x, p->ColliderBounds.size.y};
+	p->Hitbox = (Rectangle){ p->Position.x - (p->ColliderBounds.size.x / 2), p->Position.y - (p->ColliderBounds.size.y / 2), p->ColliderBounds.size.x, p->ColliderBounds.size.y };
 
 	p->Velocity = Vector2Zero();
 
@@ -25,7 +26,7 @@ void PlayerInit(Player *p)
 	p->JumpHeight = 3;
 }
 
-void PlayerUpdate(Player *p)
+void PlayerUpdate(Player* p)
 {
 	if (IsKeyDown(KEY_SPACE))
 	{
@@ -41,7 +42,7 @@ void PlayerUpdate(Player *p)
 
 	if (jumpBufferTime > 0)
 		jumpBufferTime -= TICKRATE;
-	
+
 	//if (IsKeyDown(KEY_W))
 	//	pos.y -= p->MovementSpeed * TICKRATE;
 	//if (IsKeyDown(KEY_S))
@@ -102,41 +103,43 @@ void PlayerUpdate(Player *p)
 	p->ColliderBounds.position = pos;
 
 	UpdateAABBData(&p->ColliderBounds);
-	MoveAABB(&p->ColliderBounds, &p->Position, &p->IsGrounded);
+	MoveAABB(&p->ColliderBounds, &p->Position, &verticalHitType);
 
 	p->GroundCheckBounds.position = (Vector2){ p->Position.x, p->Position.y + 50 };
 	UpdateAABBData(&p->GroundCheckBounds);
 
-	if (p->IsGrounded && p->Velocity.y > 0 && !p->IsJumping)
+	p->IsGrounded = verticalHitType == 1; //hit floor
+
+	if ((p->IsGrounded && p->Velocity.y > 0 && !p->IsJumping) || verticalHitType == -1) //-1 = hit ceiling
 		p->Velocity.y = 0;
 
 	/*p->Hitbox.x = p->Position.x - p->HalfSize.x;
 	p->Hitbox.y = p->Position.y - (p->Size.y * 0.75);*/
 }
 
-void PlayerJump(Player *p)
+void PlayerJump(Player* p)
 {
 	p->Velocity.y = PlayerGetJumpVelocity(p);
 	p->IsJumping = true;
 	p->IsGrounded = false;
 }
 
-float PlayerGetJumpVelocity(Player *p)
+float PlayerGetJumpVelocity(Player* p)
 {
 	return ((-2 * p->JumpHeight) / p->JumpTimeToPeak);
 }
 
-float PlayerGetJumpGravity(Player *p)
+float PlayerGetJumpGravity(Player* p)
 {
 	return ((2 * p->JumpHeight) / (p->JumpTimeToPeak * p->JumpTimeToPeak));
 }
 
-float PlayerGetFallGravity(Player *p)
+float PlayerGetFallGravity(Player* p)
 {
 	return ((2 * p->JumpHeight) / (p->JumpTimeToDescend * p->JumpTimeToDescend));
 }
 
-void PlayerDraw(Player *p)
+void PlayerDraw(Player* p)
 {
 	DrawBounds(&p->ColliderBounds, RED, false);
 	DrawBounds(&p->GroundCheckBounds, RED, false);
