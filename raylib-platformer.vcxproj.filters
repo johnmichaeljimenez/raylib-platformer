@@ -36,6 +36,9 @@
     <ClCompile Include="src\time.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\aabb.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\collision.h">
@@ -51,6 +54,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="src\time.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\aabb.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

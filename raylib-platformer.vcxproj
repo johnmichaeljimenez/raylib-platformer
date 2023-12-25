@@ -130,6 +130,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\aabb.c" />
     <ClCompile Include="src\bullets.c" />
     <ClCompile Include="src\collision.c" />
     <ClCompile Include="src\game.c" />
@@ -138,6 +139,7 @@
     <ClCompile Include="src\time.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\aabb.h" />
     <ClInclude Include="src\bullets.h" />
     <ClInclude Include="src\collision.h" />
     <ClInclude Include="src\game.h" />

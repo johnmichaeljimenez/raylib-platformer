@@ -5,6 +5,7 @@
 #include "player.h"
 #include <raymath.h>
 #include "bullets.h"
+#include "aabb.h"
 
 Camera2D camera;
 static Vector2 cameraLerpPos;
@@ -24,10 +25,12 @@ void InitGame()
 	PlayerInit(&player);
 	InitBulletSystem();
 	LoadWalls();
+	InitAABB();
 }
 
 void UpdateGame()
 {
+	UpdateAABB();
 	PlayerUpdate(&player);
 	UpdateBullets();
 
@@ -40,6 +43,7 @@ void RenderGame()
 	BeginMode2D(camera);
 
 	DrawWalls();
+	DrawAABB();
 	PlayerDraw(&player);
 	DrawBullets();
 
