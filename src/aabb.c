@@ -6,6 +6,10 @@
 static Bounds p;
 static Bounds block;
 static bool colliding;
+static bool isWall;
+static float xd, yd;
+
+static Rectangle rr;
 
 void InitAABB()
 {
@@ -29,14 +33,18 @@ void InitAABB()
 
 static bool IsAABBColliding(Bounds* a, Bounds* b)
 {
-	return a->min.x <= b->max.x &&
+	bool c = a->min.x <= b->max.x &&
 		a->max.x >= b->min.x &&
 		a->min.y <= b->max.y &&
 		a->max.y >= b->min.y;
+
+	return c;
 }
 
 void UpdateAABB()
 {
+	Vector2 pos = p.position;
+
 	if (IsKeyDown(KEY_UP))
 		p.position.y -= 150 * TICKRATE;
 	else if (IsKeyDown(KEY_DOWN))
@@ -48,6 +56,28 @@ void UpdateAABB()
 
 	UpdateAABBData(&p);
 	colliding = IsAABBColliding(&p, &block);
+
+	if (colliding)
+	{
+		Vector2 diff = Vector2Subtract(p.position, block.position);
+		diff.x = diff.x >= 0? 1 : -1;
+		diff.y = diff.y >= 0 ? 1 : -1;
+
+		rr = GetCollisionRec((Rectangle) { p.min.x, p.min.y, p.size.x, p.size.y }, (Rectangle) { block.min.x, block.min.y, block.size.x, block.size.y });
+
+		if (rr.height > 0 && rr.width > 0)
+		{
+			if (rr.width > rr.height)
+			{
+				isWall = false;
+				p.position.y += diff.y * rr.height;
+			}
+			else {
+				isWall = true;
+				p.position.x += diff.x * rr.width;
+			}
+		}
+	}
 }
 
 void UpdateAABBData(Bounds* b)
@@ -64,4 +94,9 @@ void DrawAABB()
 {
 	DrawRectangle(p.min.x, p.min.y, p.size.x, p.size.y, colliding ? RED : GREEN);
 	DrawRectangle(block.min.x, block.min.y, block.size.x, block.size.y, BLUE);
+
+	if (colliding)
+		DrawRectangleRec(rr, WHITE);
+
+	DrawText(colliding ? isWall ? "WALL" : "FLOOR" : "NONE", 12, 12, 20, RED);
 }
