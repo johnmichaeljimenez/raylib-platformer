@@ -14,6 +14,7 @@ typedef struct Player
 
 	bool IsGrounded;
 	bool IsJumping;
+	bool DetectedGround;
 	float JumpHeight;
 	float JumpTimeToPeak;
 	float JumpTimeToDescend;

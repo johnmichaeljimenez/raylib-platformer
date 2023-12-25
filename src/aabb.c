@@ -26,8 +26,9 @@ Bounds CreateBounds(Vector2 pos, Vector2 size)
 	return b;
 }
 
-bool MoveAABB(Bounds* a, Vector2* pos)
+bool MoveAABB(Bounds* a, Vector2* pos, bool* grounded)
 {
+	*grounded = false;
 	for (int i = 0; i < BlockListCount; i++)
 	{
 		Bounds b = BlockList[i];
@@ -44,6 +45,9 @@ bool MoveAABB(Bounds* a, Vector2* pos)
 				if (colRect.width > colRect.height)
 				{
 					a->position.y += diff.y * colRect.height;
+
+					if (diff.y <= 0)
+						*grounded = true;
 				}
 				else {
 					a->position.x += diff.x * colRect.width;

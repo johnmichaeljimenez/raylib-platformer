@@ -16,6 +16,7 @@ void PlayerInit(Player *p)
 
 	p->IsJumping = false;
 	p->IsGrounded = false;
+	p->DetectedGround = false;
 	p->JumpTimeToPeak = 0.45;
 	p->JumpTimeToDescend = 0.4;
 	p->JumpHeight = 2;
@@ -25,7 +26,7 @@ void PlayerUpdate(Player *p)
 {
 	Vector2 pos = p->Position;
 
-	p->IsGrounded = IsAABBCollidingToWorld(&p->GroundCheckBounds);
+	p->DetectedGround = IsAABBCollidingToWorld(&p->GroundCheckBounds);
 
 	//if (IsKeyDown(KEY_W))
 	//	pos.y -= p->MovementSpeed * TICKRATE;
@@ -69,7 +70,7 @@ void PlayerUpdate(Player *p)
 		}
 	}
 
-	if (p->IsGrounded)
+	if (p->DetectedGround && !p->IsJumping && p->Velocity.y >= 0)
 	{
 		// TODO: Add jump buffer input and coyote time
 		if (IsKeyPressed(KEY_SPACE))
@@ -87,7 +88,7 @@ void PlayerUpdate(Player *p)
 	p->ColliderBounds.position = pos;
 
 	UpdateAABBData(&p->ColliderBounds);
-	MoveAABB(&p->ColliderBounds, &p->Position);
+	MoveAABB(&p->ColliderBounds, &p->Position, &p->IsGrounded);
 
 	p->GroundCheckBounds.position = (Vector2){ p->Position.x, p->Position.y + 50 };
 	UpdateAABBData(&p->GroundCheckBounds);
