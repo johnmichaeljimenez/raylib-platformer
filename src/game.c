@@ -30,7 +30,6 @@ void InitGame()
 
 void UpdateGame()
 {
-	UpdateAABB();
 	PlayerUpdate(&player);
 	UpdateBullets();
 

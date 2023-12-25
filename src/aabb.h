@@ -12,9 +12,11 @@ typedef struct Bounds
 } Bounds;
 
 
+Bounds CreateBounds(Vector2 pos, Vector2 size);
 void InitAABB();
-void UpdateAABB();
 void DrawAABB();
 void UpdateAABBData(Bounds* block);
+bool IsAABBColliding(Bounds* a, Bounds* b);
+bool MoveAABB(Bounds* a);
 
 #endif
