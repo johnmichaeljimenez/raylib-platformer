@@ -129,3 +129,11 @@ void PlayerDraw(Player *p)
 	//DrawRectangleRec(p->Hitbox, GREEN);
 	DrawCircleV(p->Position, 4, RED);
 }
+
+void PlayerDrawHUD(Player* p)
+{
+	DrawText(TextFormat("Velocity: %f, %f", p->Velocity.x, p->Velocity.y), 12, 30, 15, WHITE);
+	DrawText(TextFormat("Jumping: %d", p->IsJumping), 12, 45, 15, WHITE);
+	DrawText(TextFormat("Grounded: %d", p->IsGrounded), 12, 60, 15, WHITE);
+	DrawText(TextFormat("Detected Ground: %d", p->DetectedGround), 12, 75, 15, WHITE);
+}

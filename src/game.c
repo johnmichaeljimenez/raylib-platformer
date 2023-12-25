@@ -44,6 +44,8 @@ void RenderGame()
 	DrawBullets();
 
 	EndMode2D();
+
+	PlayerDrawHUD(&player);
 }
 
 void EndGame()

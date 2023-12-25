@@ -29,5 +29,6 @@ float PlayerGetJumpVelocity(Player *p);
 float PlayerGetJumpGravity(Player *p);
 float PlayerGetFallGravity(Player *p);
 void PlayerDraw(Player *p);
+void PlayerDrawHUD(Player* p);
 
 #endif
