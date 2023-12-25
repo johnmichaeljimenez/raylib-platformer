@@ -5,6 +5,7 @@
 #include "aabb.h"
 
 static float coyoteTime = 0;
+static float jumpBufferTime = 0;
 
 void PlayerInit(Player *p)
 {
@@ -26,12 +27,20 @@ void PlayerInit(Player *p)
 
 void PlayerUpdate(Player *p)
 {
+	if (IsKeyDown(KEY_SPACE))
+	{
+		jumpBufferTime = 0.1f;
+	}
+
 	Vector2 pos = p->Position;
 
 	p->DetectedGround = IsAABBCollidingToWorld(&p->GroundCheckBounds);
 
 	if (coyoteTime > 0)
 		coyoteTime -= TICKRATE;
+
+	if (jumpBufferTime > 0)
+		jumpBufferTime -= TICKRATE;
 	
 	//if (IsKeyDown(KEY_W))
 	//	pos.y -= p->MovementSpeed * TICKRATE;
@@ -68,7 +77,7 @@ void PlayerUpdate(Player *p)
 
 		if (p->IsJumping)
 		{
-			if (IsKeyReleased(KEY_SPACE))
+			if (IsKeyUp(KEY_SPACE))
 			{
 				p->Velocity.y /= 2;
 				p->IsJumping = false;
@@ -78,8 +87,7 @@ void PlayerUpdate(Player *p)
 
 	if ((p->DetectedGround || coyoteTime > 0) && !p->IsJumping && p->Velocity.y >= 0)
 	{
-		// TODO: Add jump buffer input and coyote time
-		if (IsKeyPressed(KEY_SPACE))
+		if (jumpBufferTime > 0)
 		{
 			PlayerJump(p);
 		}
@@ -143,4 +151,5 @@ void PlayerDrawHUD(Player* p)
 	DrawText(TextFormat("Grounded: %d", p->IsGrounded), 12, 60, 15, WHITE);
 	DrawText(TextFormat("Detected Ground: %d", p->DetectedGround), 12, 75, 15, WHITE);
 	DrawText(TextFormat("Coyote Time: %f", coyoteTime), 12, 90, 15, WHITE);
+	DrawText(TextFormat("Jump Buffer Time: %f", jumpBufferTime), 12, 105, 15, WHITE);
 }
