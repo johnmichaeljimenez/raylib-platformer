@@ -6,6 +6,7 @@
 
 void PlayerInit(Player *p)
 {
+	p->GroundCheckBounds = CreateBounds((Vector2){p->Position.x, p->Position.y + 50}, (Vector2) { 60, 12 });
 	p->ColliderBounds = CreateBounds(p->Position, (Vector2) { 64, 96 });
 	p->MovementSpeed = 300;
 	p->Position = Vector2Zero();
@@ -23,6 +24,8 @@ void PlayerInit(Player *p)
 void PlayerUpdate(Player *p)
 {
 	Vector2 pos = p->Position;
+
+	p->IsGrounded = IsAABBCollidingToWorld(&p->GroundCheckBounds);
 
 	//if (IsKeyDown(KEY_W))
 	//	pos.y -= p->MovementSpeed * TICKRATE;
@@ -86,7 +89,12 @@ void PlayerUpdate(Player *p)
 	UpdateAABBData(&p->ColliderBounds);
 	MoveAABB(&p->ColliderBounds, &p->Position);
 
-	//p->IsGrounded = CollideBody(&(p->Position), 24);
+	p->GroundCheckBounds.position = (Vector2){ p->Position.x, p->Position.y + 50 };
+	UpdateAABBData(&p->GroundCheckBounds);
+
+	if (p->IsGrounded && p->Velocity.y > 0 && !p->IsJumping)
+		p->Velocity.y = 0;
+
 	/*p->Hitbox.x = p->Position.x - p->HalfSize.x;
 	p->Hitbox.y = p->Position.y - (p->Size.y * 0.75);*/
 }
@@ -116,6 +124,7 @@ float PlayerGetFallGravity(Player *p)
 void PlayerDraw(Player *p)
 {
 	DrawBounds(&p->ColliderBounds, RED, false);
+	DrawBounds(&p->GroundCheckBounds, RED, false);
 	//DrawRectangleRec(p->Hitbox, GREEN);
 	DrawCircleV(p->Position, 4, RED);
 }

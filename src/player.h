@@ -7,6 +7,7 @@ typedef struct Player
 {
 	Vector2 Position;
 	Bounds ColliderBounds;
+	Bounds GroundCheckBounds;
 	Rectangle Hitbox;
 
 	Vector2 Velocity;

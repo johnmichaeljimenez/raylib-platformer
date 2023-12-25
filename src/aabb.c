@@ -11,7 +11,7 @@ void InitAABB()
 {
 	BlockList[0] = CreateBounds((Vector2) { 0, 80 }, (Vector2) { 300, 30 });
 	BlockList[1] = CreateBounds((Vector2) { 200, 0 }, (Vector2) { 120, 150 });
-	BlockList[2] = CreateBounds((Vector2) { -200, 0 }, (Vector2) { 120, 150 });
+	BlockList[2] = CreateBounds((Vector2) { -200, 20 }, (Vector2) { 120, 50 });
 }
 
 Bounds CreateBounds(Vector2 pos, Vector2 size)
@@ -66,6 +66,21 @@ bool IsAABBColliding(Bounds* a, Bounds* b)
 		a->max.y >= b->min.y;
 
 	return c;
+}
+
+bool IsAABBCollidingToWorld(Bounds* a)
+{
+	for (int i = 0; i < BlockListCount; i++)
+	{
+		Bounds b = BlockList[i];
+		if (a->min.x <= b.max.x &&
+			a->max.x >= b.min.x &&
+			a->min.y <= b.max.y &&
+			a->max.y >= b.min.y)
+			return true;
+	}
+
+	return false;
 }
 
 void UpdateAABBData(Bounds* b)
