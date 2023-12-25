@@ -4,14 +4,15 @@
 #include "time.h"
 #include "stdio.h"
 
-int BlockListCount = 3;
-Bounds BlockList[3];
+int BlockListCount = 4;
+Bounds BlockList[4];
 
 void InitAABB()
 {
 	BlockList[0] = CreateBounds((Vector2) { 0, 80 }, (Vector2) { 300, 30 });
 	BlockList[1] = CreateBounds((Vector2) { 200, 0 }, (Vector2) { 120, 150 });
 	BlockList[2] = CreateBounds((Vector2) { -200, 20 }, (Vector2) { 120, 50 });
+	BlockList[3] = CreateBounds((Vector2) { 0, -150 }, (Vector2) { 100, 50 });
 }
 
 Bounds CreateBounds(Vector2 pos, Vector2 size)
@@ -26,9 +27,9 @@ Bounds CreateBounds(Vector2 pos, Vector2 size)
 	return b;
 }
 
-bool MoveAABB(Bounds* a, Vector2* pos, bool* grounded)
+bool MoveAABB(Bounds* a, Vector2* pos, int* verticalHitType)
 {
-	*grounded = false;
+	*verticalHitType = 0;
 	for (int i = 0; i < BlockListCount; i++)
 	{
 		Bounds b = BlockList[i];
@@ -47,7 +48,9 @@ bool MoveAABB(Bounds* a, Vector2* pos, bool* grounded)
 					a->position.y += diff.y * colRect.height;
 
 					if (diff.y <= 0)
-						*grounded = true;
+						*verticalHitType = 1;
+					else
+						*verticalHitType = -1;
 				}
 				else {
 					a->position.x += diff.x * colRect.width;

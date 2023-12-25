@@ -18,7 +18,7 @@ void DrawAABB();
 void UpdateAABBData(Bounds* block);
 bool IsAABBColliding(Bounds* a, Bounds* b);
 bool IsAABBCollidingToWorld(Bounds* a);
-bool MoveAABB(Bounds* a, Vector2* pos);
+bool MoveAABB(Bounds* a, Vector2* pos, int* verticalHitType);
 void DrawBounds(Bounds* a, Color c);
 
 #endif
