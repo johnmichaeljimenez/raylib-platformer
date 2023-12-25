@@ -1,11 +1,10 @@
 #include "time.h"
 #include <raylib.h>
 #include "game.h"
-#include "collision.h"
+#include "aabb.h"
 #include "player.h"
 #include <raymath.h>
 #include "bullets.h"
-#include "aabb.h"
 
 Camera2D camera;
 static Vector2 cameraLerpPos;
@@ -24,7 +23,6 @@ void InitGame()
 	setupCamera();
 	PlayerInit(&player);
 	InitBulletSystem();
-	LoadWalls();
 	InitAABB();
 }
 
@@ -41,7 +39,6 @@ void RenderGame()
 {
 	BeginMode2D(camera);
 
-	DrawWalls();
 	DrawAABB();
 	PlayerDraw(&player);
 	DrawBullets();

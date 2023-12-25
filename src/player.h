@@ -1,12 +1,12 @@
+#include "aabb.h"
+
 #ifndef _player_h
 #define _player_h
 
 typedef struct Player
 {
-
 	Vector2 Position;
-	Vector2 Size;
-	Vector2 HalfSize;
+	Bounds ColliderBounds;
 	Rectangle Hitbox;
 
 	Vector2 Velocity;

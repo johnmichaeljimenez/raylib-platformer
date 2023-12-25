@@ -2,13 +2,16 @@
 #include <raymath.h>
 #include "aabb.h"
 #include "time.h"
+#include "stdio.h"
 
-int BlockListCount = 1;
-Bounds BlockList[1];
+int BlockListCount = 3;
+Bounds BlockList[3];
 
 void InitAABB()
 {
 	BlockList[0] = CreateBounds((Vector2) { 0, 80 }, (Vector2) { 300, 30 });
+	BlockList[1] = CreateBounds((Vector2) { 200, 0 }, (Vector2) { 120, 150 });
+	BlockList[2] = CreateBounds((Vector2) { -200, 0 }, (Vector2) { 120, 150 });
 }
 
 Bounds CreateBounds(Vector2 pos, Vector2 size)
@@ -23,12 +26,12 @@ Bounds CreateBounds(Vector2 pos, Vector2 size)
 	return b;
 }
 
-bool MoveAABB(Bounds* a)
+bool MoveAABB(Bounds* a, Vector2* pos)
 {
 	for (int i = 0; i < BlockListCount; i++)
 	{
 		Bounds b = BlockList[i];
-		if (IsAABBColliding(&a, &b))
+		if (IsAABBColliding(a, &b))
 		{
 			Vector2 diff = Vector2Subtract(a->position, b.position);
 			diff.x = diff.x >= 0 ? 1 : -1;
@@ -45,11 +48,14 @@ bool MoveAABB(Bounds* a)
 				else {
 					a->position.x += diff.x * colRect.width;
 				}
-			}
 
-			UpdateAABBData(a);
+				UpdateAABBData(a);
+			}
 		}
 	}
+
+	pos->x = a->position.x;
+	pos->y = a->position.y;
 }
 
 bool IsAABBColliding(Bounds* a, Bounds* b)
@@ -78,6 +84,14 @@ void DrawAABB()
 	{
 		Bounds b = BlockList[i];
 
-		DrawRectangleLines(b.min.x, b.min.y, b.size.x, b.size.y, BLUE);
+		DrawBounds(&b, BLUE, false);
 	}
+}
+
+void DrawBounds(Bounds* b, Color c, bool solid)
+{
+	if (solid)
+		DrawRectangle(b->min.x, b->min.y, b->size.x, b->size.y, c);
+	else
+		DrawRectangleLines(b->min.x, b->min.y, b->size.x, b->size.y, c);
 }
